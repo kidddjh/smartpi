@@ -23,7 +23,7 @@ byellow(){
 
 function install_smartpi(){
 apt-get -y update
-apt -y install wget unzip zip curl
+apt -y install curl
 wget https://github.com/pymumu/smartdns/releases/download/Release28/smartdns.1.2019.12.15-1028.x86_64-linux-all.tar.gz
 tar zxf smartdns.1.2019.12.15-1028.x86_64-linux-all.tar.gz
 cd smartdns
@@ -31,6 +31,7 @@ chmod +x ./install
 ./install -i
 rm -rf /etc/smartdns/smartdns.conf
 cat > /etc/smartdns/smartdns.conf <<-EOF
+
 bind [::]:5599
 
 cache-size 512
