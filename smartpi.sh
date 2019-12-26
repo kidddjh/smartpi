@@ -31,7 +31,7 @@ chmod +x ./install
 ./install -i
 rm -rf /etc/smartdns/smartdns.conf
 cat > /etc/smartdns/smartdns.conf <<-EOF
-bind [::]:53
+bind [::]:5599
 
 cache-size 512
 
@@ -61,21 +61,19 @@ cp /etc/smartdns/smartdns.conf /etc/smartdns/smartdns.conf.bak
 systemctl enable smartdns
 systemctl start smartdns
 
-:<<<'
 curl -sSL https://install.pi-hole.net | bash
 
 sed -i '/PIHOLE_DNS/d' /etc/pihole/setupVars.conf
 sed -i '$a PIHOLE_DNS_1=127.0.0.1#5599' /etc/pihole/setupVars.conf
 
 pihole restartdns
-'
+
 	green " ========================================================================="
 	green " SmartPi安装完成"
     green " 系统：>=debian9"
     green " Youtube：米月"
     green " 电报群：https://t.me/mi_yue"
     green " Youtube频道地址：https://www.youtube.com/channel/UCr4HCEgaZ0cN5_7tLHS_xAg"
-	
 	green " ========================================================================="
 	
 }
@@ -105,7 +103,6 @@ pihole restartdns
     green " Youtube：米月"
     green " 电报群：https://t.me/mi_yue"
     green " Youtube频道地址：https://www.youtube.com/channel/UCr4HCEgaZ0cN5_7tLHS_xAg"
-	
 	green " ========================================================================="
 }
 
