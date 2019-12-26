@@ -31,7 +31,7 @@ chmod +x ./install
 ./install -i
 rm -rf /etc/smartdns/smartdns.conf
 cat > /etc/smartdns/smartdns.conf <<-EOF
-bind [::]:5599
+bind [::]:53
 
 cache-size 512
 
@@ -58,14 +58,17 @@ EOF
 
 cp /etc/smartdns/smartdns.conf /etc/smartdns/smartdns.conf.bak
 
+systemctl enable smartdns
+systemctl start smartdns
+
+:<<<'
 curl -sSL https://install.pi-hole.net | bash
 
 sed -i '/PIHOLE_DNS/d' /etc/pihole/setupVars.conf
 sed -i '$a PIHOLE_DNS_1=127.0.0.1#5599' /etc/pihole/setupVars.conf
 
-systemctl enable smartdns
-systemctl start smartdns
 pihole restartdns
+'
 	green " ========================================================================="
 	green " SmartPi安装完成"
     green " 系统：>=debian9"
