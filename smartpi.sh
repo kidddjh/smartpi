@@ -66,7 +66,9 @@ curl -sSL https://install.pi-hole.net | bash
 
 sed -i '/PIHOLE_DNS/d' /etc/pihole/setupVars.conf
 sed -i '$a PIHOLE_DNS_1=127.0.0.1#5599' /etc/pihole/setupVars.conf
-
+sed -i '/DNSMASQ_LISTENING/d' /etc/pihole/setupVars.conf
+sed -i '$a DNSMASQ_LISTENING=local' /etc/pihole/setupVars.conf
+pihole restartdns
 	green " ===========================请重启debian系统=============================="
 	green " SmartPi安装完成"
     green " 系统：>=debian9"
@@ -74,7 +76,7 @@ sed -i '$a PIHOLE_DNS_1=127.0.0.1#5599' /etc/pihole/setupVars.conf
     green " 电报群：https://t.me/mi_yue"
     green " Youtube频道地址：https://www.youtube.com/channel/UCr4HCEgaZ0cN5_7tLHS_xAg"
 	green " ===========================请重启debian系统=============================="
-	
+reboot
 }
 
 function update_smartdns(){
