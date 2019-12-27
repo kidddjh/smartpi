@@ -20,8 +20,29 @@ byellow(){
     echo -e "\033[33m\033[01m\033[05m$1\033[0m"
 }
 
+architecture=""
+case $(uname -m) in
+    x86_64)  architecture="amd64" ;;
+    aarch64)  architecture="arm64" ;;
+esac
+
 
 function install_smartpi(){
+
+if [[ $architecture = "amd64" ]]; then
+cp /etc/apt/sources.list /etc/apt/sources.list.bak
+rm -rf /etc/apt/sources.list
+
+cat > /etc/apt/sources.list << EOF
+deb http://mirrors.163.com/debian buster main
+deb-src http://mirrors.163.com/debian buster main
+deb http://mirrors.163.com/debian-security/ buster/updates main
+deb-src http://mirrors.163.com/debian-security/ buster/updates main
+deb http://mirrors.163.com/debian buster-updates main
+deb-src http://mirrors.163.com/debian buster-updates main
+EOF
+fi
+
 apt-get -y update
 apt -y install curl
 wget https://github.com/pymumu/smartdns/releases/download/Release28/smartdns.1.2019.12.15-1028.x86_64-linux-all.tar.gz
@@ -68,7 +89,17 @@ sed -i '/PIHOLE_DNS/d' /etc/pihole/setupVars.conf
 sed -i '$a PIHOLE_DNS_1=127.0.0.1#5599' /etc/pihole/setupVars.conf
 sed -i '/DNSMASQ_LISTENING/d' /etc/pihole/setupVars.conf
 sed -i '$a DNSMASQ_LISTENING=local' /etc/pihole/setupVars.conf
-pihole restartdns
+
+rm -rf /etc/resolv.conf
+
+cat > /etc/resolv.conf << EOF
+nameserver 119.29.29.29
+nameserver 119.28.28.28
+nameserver 223.5.5.5
+nameserver 223.6.6.6
+EOF
+
+pihole restartdns > /dev/null 2>&1
 	green " ===========================请重启debian系统=============================="
 	green " SmartPi安装完成"
     green " 系统：>=debian9"
@@ -76,7 +107,7 @@ pihole restartdns
     green " 电报群：https://t.me/mi_yue"
     green " Youtube频道地址：https://www.youtube.com/channel/UCr4HCEgaZ0cN5_7tLHS_xAg"
 	green " ===========================请重启debian系统=============================="
-reboot
+
 }
 
 function update_smartdns(){
